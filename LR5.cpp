@@ -11,13 +11,14 @@ void print(int a)
 {
     cout << a << " ";
 }
-void printMap(std::pair<int, std::string> pair) {
-    std::cout << pair.first << " " << pair.second << std::endl;
+void printMap(pair<int, string> map) {
+    cout << map.first << " " << map.second << endl;
 }
 
 int main()
 {
-    unordered_multimap < int, std::string> multmap =
+    setlocale(LC_ALL, "ru");
+    unordered_multimap <int, string> multmap =
     {
          { 0 , "asd" },
          { 1 , "asdf" },
@@ -31,43 +32,45 @@ int main()
          { 4 , "sadfdsafDE" },
          { 3 , "gdfDEF" }
     };
-    multmap.insert({ 4, "CBA" });
-    multmap.insert({ 4, "CAB" });
-    multmap.erase(multmap.find(4));
-    map<int, string> smap;   
+    multmap.insert({ { 4, "CBA" }, { 4, "CAB" } });
+    for_each(multmap.begin(), multmap.end(), printMap);
+    cout << endl;
+    multmap.extract(4);
+    for_each(multmap.begin(), multmap.end(), printMap);
+    cout << endl;
+    map<int, string> smap;
     for (auto& i : multmap)
     {
         smap[i.first] = i.second;
     }
     for_each(smap.begin(), smap.end(), printMap);
-    cout << "Koli4estvo elementov s key ot 0 do 6 = " << count_if(smap.begin(),  // zada4a 2
-        smap.end(), [](auto& i) { return i.first > 0;
-    return i.first < 6;
-        });
+    //
+    cout << "Колличество элементов с ключём от 0 до 6: " << count_if(smap.begin(),  
+    smap.end(), [](auto& i) { return (i.first > 0) && (i.first < 6); });
     cout << endl;
     vector<int> key(smap.size());
     transform(smap.begin(),
-        smap.end(),
-        key.begin(),
-        [](pair<const int, string > i)
-        {
-            return i.first;
-        });
+              smap.end(),
+              key.begin(),
+              [](pair<const int, string > i)
+              {
+                return i.first;
+              });
     for_each(key.begin(), key.end(), print); // vivod vector
     cout << endl;
     const int nine = 9;  // zada4a 3
     auto it = find(key.begin(), key.end(), nine);
     auto index = distance(key.begin(), it);
     replace(key.begin(), key.end(), 0, 3);  // replacing zero elements with 3
-        for_each(key.begin(), key.end(), print);
-        cout << endl;
+    for_each(key.begin(), key.end(), print);
+    cout << endl;
     sort(key.begin(), key.end(), greater<int>()); // Sort descending
-        for_each(key.begin(), key.end(), print);
-        cout << endl;
-        set<int> set;
-        for (auto i : key) {
-            set.insert(i); 
-        }
-        for_each(set.begin(), set.end(), print);
+    for_each(key.begin(), key.end(), print);
+    cout << endl;
+    set<int> set;
+    for (auto i : key) {
+        set.insert(i);
+    }
+    for_each(set.begin(), set.end(), print);
     return 0;
 }

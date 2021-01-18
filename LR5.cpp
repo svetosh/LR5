@@ -35,7 +35,7 @@ int main()
     multmap.insert({ { 4, "CBA" }, { 4, "CAB" } });
     for_each(multmap.begin(), multmap.end(), printMap);
     cout << endl;
-    multmap.extract(4);
+    multmap.erase(4);
     for_each(multmap.begin(), multmap.end(), printMap);
     cout << endl;
     map<int, string> smap;
